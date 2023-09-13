@@ -2,6 +2,7 @@ import React,{ChangeEvent, FC} from 'react';
 import { useState } from 'react';
 import {todoType} from './apptypes'
 import './App.css';
+import TodoItem from './TodoItem';
 
 
 const App:FC =()=> {
@@ -23,7 +24,7 @@ const App:FC =()=> {
 
   }
 
-  const addNewTask = () => {
+  const addNewTask = (): void => {
     const newTask = {
       taskName: task,
       workDay: workDay
@@ -36,13 +37,26 @@ const App:FC =()=> {
   
   }
 
+  const deleteTask = (nameToDelete:string):void => {
+    
+    setTodoList(todoList.filter((task)=>{
+      return task.taskName !== nameToDelete
+    }))
+
+  }
+
   return (
     <div className="App">
-        <div>
-          <input type="text" value={task} name='task' placeholder='Taskınızı giriniz...' onChange={handleChange} />
-          <input type="number" name='workDay
+        <div className='mainCard'>
+          <input className='mainCardInput' type="text" value={task} name='task' placeholder='Taskınızı giriniz...' onChange={handleChange} />
+          <input className='mainCardInput' type="number" name='workDay
           ' value={workDay} placeholder='Kaç günde tamamlamalısınız' onChange={handleChange} />
-          <button onClick={addNewTask} >Task Ekle</button>
+          <button className='mainCardButton' onClick={addNewTask} >Task Ekle</button>
+        </div>
+        <div className='todoCard'>
+          {todoList.map((task:todoType, index:number)=>{
+            return <TodoItem key={index} task={task} deleteTask={deleteTask}></TodoItem>
+          })}
         </div>
     </div>
   );
